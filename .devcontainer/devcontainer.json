@@ -1,0 +1,6 @@
+{
+  "name": "owl",
+  "dockerComposeFile": "./compose.yaml",
+  "service": "debian",
+  "workspaceFolder": "/home/owl/dev"
+}

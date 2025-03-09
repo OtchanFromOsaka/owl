@@ -1,0 +1,30 @@
+#!/bin/bash
+
+start_time=`date +%s`
+
+if [ $# -ne 1 ]; then
+  echo "please add option \"setup\" or \"update\"."
+  exit 1
+fi
+
+if [ $1 != "setup" ] && [ $1 != "update" ]; then
+  echo "please add option \"setup\" or \"update\"."
+  exit 1
+fi
+
+cd /home/owl/dev
+
+if [ $1 = "setup" ]; then
+  pnpm install
+  pnpm exec playwright install
+fi
+
+if [ $1 = "update" ]; then
+  pnpm up
+  pnpm install
+  pnpm exec playwright install
+fi
+
+end_time=`date +%s`
+time=$((end_time - start_time))
+echo "Done in $time sec"

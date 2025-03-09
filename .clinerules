@@ -1,0 +1,45 @@
+# Rules
+
+This file is a rule book that the user and AI create to cooperate and work efficiently.
+
+Basically, it is created by the user, but contexts can be edited by the AI as well. Please edit each and every context as soon as you find one that you may need in the future.
+
+If you find that other parts need to be edited, please check with the user first.
+
+## Contexts in this repository
+
+AI can add to it as needed.
+
+## Git
+
+The main branch should always be stable.
+
+Work on the main-x.x.x branch and run tests before merging into the main branch.
+
+## Docker
+
+Your local D:\dev\owl is the repository root.
+
+The container is named owl-app and everything in D:\dev\owl is mounted to /home/owl/dev in the container.
+
+The user performs tasks on the host OS (Windows), such as creating and starting the container, but the user and AI work together in the container.
+
+Only software installation is done by the root user, while other tasks such as development are done by the owl user.
+
+## Technology Selection
+
+pnpm will be used as the package manager.
+
+HonoX + hono/jsx + TypeScript will be used, following functional programming, domain driven design and test driven development.
+
+Use Biome's default configuration for Linter and Formatter.
+
+Use Vitest for unit testing and Playwright for E2E testing.
+
+## Miscellaneous
+
+If you create a pure function, your first priority is the success of its unit test.
+
+Use early returns to make the nesting of conditional branches shallower.
+
+Run biome lint --write && biome format --write before committing.
