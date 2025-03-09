@@ -7,16 +7,12 @@ if [ $# -ne 1 ]; then
   exit 1
 fi
 
-if [ $1 != "setup" ] && [ $1 != "update" ]; then
+if [ "$1" != "setup" ] && [ "$1" != "update" ]; then
   echo "please add option \"setup\" or \"update\"."
   exit 1
 fi
 
-if [ $1 = "setup" ]; then
-  chown -R owl:owl /home/owl/dev
-  chown -R owl:owl /usr/local/bin/owl
-  chmod 744 /sbin/owl-root
-  chmod 744 /usr/local/bin/owl
+if [ "$1" = "setup" ]; then
   apt-get update -y
   apt-get install -y curl
   apt-get install -y npm
@@ -25,9 +21,13 @@ if [ $1 = "setup" ]; then
   npm install -g @playwright/test
   n 22
   pnpm exec playwright install-deps
+  chown -R owl:owl /home/owl/dev
+  chown -R owl:owl /usr/local/bin/owl
+  chmod 744 /sbin/root
+  chmod 744 /usr/local/bin/owl
 fi
 
-if [ $1 = "update" ]; then
+if [ "$1" = "update" ]; then
   apt-get update -y
   apt-get upgrade -y
   apt-get full-upgrade -y
@@ -36,6 +36,10 @@ if [ $1 = "update" ]; then
   n 22
   pnpm self-update
   pnpm exec playwright install-deps
+  chown -R owl:owl /home/owl/dev
+  chown -R owl:owl /usr/local/bin/owl
+  chmod 744 /sbin/root
+  chmod 744 /usr/local/bin/owl
 fi
 
 end_time=`date +%s`
