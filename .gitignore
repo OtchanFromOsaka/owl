@@ -5,4 +5,4 @@
 **/vite.config.*.timestamp*
 
 .pnpm-store/
-**/node_modules/
+node_modules/
