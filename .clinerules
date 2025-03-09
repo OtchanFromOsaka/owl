@@ -10,6 +10,36 @@ If you find that other parts need to be edited, please check with the user first
 
 AI can add to it as needed.
 
+### Project Structure
+
+The project is a HonoX application deployed to Cloudflare Workers with the following structure:
+
+- `app/`: Main application code
+  - `client.ts`: Client-side entry point using HonoX client
+  - `server.ts`: Server-side entry point using HonoX server
+  - `style.css`: Global styles
+  - `islands/`: Interactive components (client-side hydrated)
+    - `counter.tsx`: Simple counter component with increment button
+  - `routes/`: Application routes
+    - `index.tsx`: Main page route with counter component
+    - `_renderer.tsx`: JSX renderer for HTML structure
+    - `_404.tsx`: 404 Not Found handler
+    - `_error.tsx`: Error handler
+- `public/`: Static assets
+- `types/`: TypeScript type definitions
+
+### Build and Deployment
+
+- Development server: `pnpm dev` (Vite)
+- Build: `pnpm build` (Vite + Cloudflare Workers)
+- Preview: `pnpm preview` (Wrangler)
+- Deploy: `pnpm deploy` (Wrangler)
+
+### Testing
+
+- Unit tests: `pnpm test` (Vitest with happy-dom)
+- E2E tests: `pnpm e2e` (Playwright)
+
 ## Git
 
 The main branch should always be stable.
