@@ -75,3 +75,9 @@ If you create a pure function, your first priority is the success of its unit te
 Use early returns to make the nesting of conditional branches shallower.
 
 Run biome lint --write && biome format --write before committing.
+
+Use kebab cases for file names.
+
+Type-related files should be placed in app/types, but only .d.ts should be placed in types/ directly under the repository root.
+
+The host OS is Windows and the development environment is a Debian container. You need to enter the container with docker exec -it owl-app bash before executing commands.
