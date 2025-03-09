@@ -19,6 +19,7 @@ if [ "$1" = "setup" ]; then
   npm install -g pnpm
   npm install -g n
   npm install -g @playwright/test
+  npm install -g wrangler
   n 22
   pnpm exec playwright install-deps
   chown -R owl:owl /home/owl/dev

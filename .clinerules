@@ -1,45 +1,89 @@
-# Rules
+# ルール
 
-This file is a rule book that the user and AI create to cooperate and work efficiently.
+このファイルは、ユーザーとAIが協力して効率的に作業するためのルールブックです。
 
-Basically, it is created by the user, but contexts can be edited by the AI as well. Please edit each and every context as soon as you find one that you may need in the future.
+基本的にはユーザーによって作成されますが、コンテキストはAIによっても編集できます。将来必要になる可能性のあるコンテキストを見つけたら、すぐに編集してください。
 
-If you find that other parts need to be edited, please check with the user first.
+他の部分を編集する必要があると思われる場合は、まずユーザーに確認してください。
 
-## Contexts in this repository
+## このリポジトリのコンテキスト
 
-AI can add to it as needed.
+AIは必要に応じて追加できます。
+
+### プロジェクト構造
+
+このプロジェクトはCloudflare Workersにデプロイされるホノックス（HonoX）アプリケーションで、以下の構造を持っています：
+
+- `app/`: メインアプリケーションコード
+    - `client.ts`: HonoXクライアントを使用したクライアント側エントリーポイント
+    - `server.ts`: HonoXサーバーを使用したサーバー側エントリーポイント
+    - `style.css`: グローバルスタイル
+    - `islands/`: インタラクティブコンポーネント（クライアント側でハイドレーション）
+        - `counter.tsx`: インクリメントボタン付きの単純なカウンターコンポーネント
+    - `routes/`: アプリケーションルート
+        - `index.tsx`: カウンターコンポーネントを含むメインページルート
+        - `_renderer.tsx`: HTML構造のためのJSXレンダラー
+        - `_404.tsx`: 404 Not Foundハンドラー
+        - `_error.tsx`: エラーハンドラー
+- `public/`: 静的アセット
+- `types/`: TypeScript型定義
+
+### ビルドとデプロイメント
+
+- 開発サーバー: `pnpm dev` (Vite)
+- ビルド: `pnpm build` (Vite + Cloudflare Workers)
+- プレビュー: `pnpm preview` (Wrangler)
+- デプロイ: `pnpm deploy` (Wrangler)
+
+### テスト
+
+- ユニットテスト: `pnpm test` (happy-dom付きVitest)
+- E2Eテスト: `pnpm e2e` (Playwright)
 
 ## Git
 
-The main branch should always be stable.
+メインブランチは常に安定しているべきです。
 
-Work on the main-x.x.x branch and run tests before merging into the main branch.
+main-x.x.xブランチで作業し、メインブランチにマージする前にテストを実行してください。
+
+純粋な関数やコンポーネントファイルが作成されるたびにコミットを行います。関数の更新や修正も個別にコミットされます。ただし、コミット前にbiomeとテストコマンドが実行され、成功していることが前提です。
+
+また、開発指示とgitコミット指示は別々に与えられます。指示された関数や修正が完了したら、ユーザーに確認してください。
 
 ## Docker
 
-Your local D:\dev\owl is the repository root.
+ローカルのD:\dev\owlがリポジトリのルートです。
 
-The container is named owl-app and everything in D:\dev\owl is mounted to /home/owl/dev in the container.
+コンテナはowl-appという名前で、D:\dev\owl内のすべてがコンテナ内の/home/owl/devにマウントされています。
 
-The user performs tasks on the host OS (Windows), such as creating and starting the container, but the user and AI work together in the container.
+ユーザーはホストOS（Windows）でコンテナの作成や起動などのタスクを実行しますが、ユーザーとAIはコンテナ内で一緒に作業します。
 
-Only software installation is done by the root user, while other tasks such as development are done by the owl user.
+ソフトウェアのインストールのみrootユーザーによって行われ、開発などの他のタスクはowlユーザーによって行われます。
 
-## Technology Selection
+AIは最初から~/dev（/home/owl/dev）内のowlユーザーとして作業を開始するため、コンテナを特に意識する必要はありません。
 
-pnpm will be used as the package manager.
+## 技術選択
 
-HonoX + hono/jsx + TypeScript will be used, following functional programming, domain driven design and test driven development.
+パッケージマネージャーとしてpnpmを使用します。
 
-Use Biome's default configuration for Linter and Formatter.
+HonoX + hono/jsx + TypeScriptを使用し、関数型プログラミング、ドメイン駆動設計、テスト駆動開発に従います。
 
-Use Vitest for unit testing and Playwright for E2E testing.
+リンターとフォーマッターにはBiomeのデフォルト設定を使用します。
 
-## Miscellaneous
+ユニットテストにはVitestを、E2EテストにはPlaywrightを使用します。
 
-If you create a pure function, your first priority is the success of its unit test.
+## その他
 
-Use early returns to make the nesting of conditional branches shallower.
+純粋な関数を作成する場合、ユニットテストの成功が最優先事項です。
 
-Run biome lint --write && biome format --write before committing.
+条件分岐のネストを浅くするために、早期リターンを使用してください。
+
+コミット前に biome lint --write && biome format --write を実行してください。
+
+ファイル名にはケバブケースを使用してください。
+
+型関連のファイルはapp/typesに配置しますが、.d.tsファイルのみリポジトリルート直下のtypes/に配置します。
+
+## コミュニケーション
+
+すべてのコミュニケーションは日本語で行います。ソースコードへのコメントも日本語で記述します。
