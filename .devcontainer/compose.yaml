@@ -1,5 +1,7 @@
 version: "3"
 name: "owl"
+volumes:
+  owl-dummy:
 services:
   app:
     container_name: owl-app
@@ -13,6 +15,8 @@ services:
       - ../:/home/owl/dev
       - ./bin/root:/sbin/root
       - ./bin/owl:/usr/local/bin/owl
+      - owl-dummy:/home/owl/dev/.pnpm-store
+      - owl-dummy:/home/owl/dev/node_modules
     tty: true
     deploy:
       resources:
