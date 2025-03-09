@@ -10,6 +10,12 @@
 			"**/*.jsx",
 			"**/*.tsx"
 		],
-		"ignore": ["node_modules/**", "dist/**", "types/**"]
+		"ignore": [
+			".vscode/**",
+			".pnpm-store/**",
+			"node_modules/**",
+			"dist/**",
+			"types/**"
+		]
 	}
 }
