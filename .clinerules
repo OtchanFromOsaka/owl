@@ -1,85 +1,89 @@
-# Rules
+# ルール
 
-This file is a rule book that the user and AI create to cooperate and work efficiently.
+このファイルは、ユーザーとAIが協力して効率的に作業するためのルールブックです。
 
-Basically, it is created by the user, but contexts can be edited by the AI as well. Please edit each and every context as soon as you find one that you may need in the future.
+基本的にはユーザーによって作成されますが、コンテキストはAIによっても編集できます。将来必要になる可能性のあるコンテキストを見つけたら、すぐに編集してください。
 
-If you find that other parts need to be edited, please check with the user first.
+他の部分を編集する必要があると思われる場合は、まずユーザーに確認してください。
 
-## Contexts in this repository
+## このリポジトリのコンテキスト
 
-AI can add to it as needed.
+AIは必要に応じて追加できます。
 
-### Project Structure
+### プロジェクト構造
 
-The project is a HonoX application deployed to Cloudflare Workers with the following structure:
+このプロジェクトはCloudflare Workersにデプロイされるホノックス（HonoX）アプリケーションで、以下の構造を持っています：
 
-- `app/`: Main application code
-  - `client.ts`: Client-side entry point using HonoX client
-  - `server.ts`: Server-side entry point using HonoX server
-  - `style.css`: Global styles
-  - `islands/`: Interactive components (client-side hydrated)
-    - `counter.tsx`: Simple counter component with increment button
-  - `routes/`: Application routes
-    - `index.tsx`: Main page route with counter component
-    - `_renderer.tsx`: JSX renderer for HTML structure
-    - `_404.tsx`: 404 Not Found handler
-    - `_error.tsx`: Error handler
-- `public/`: Static assets
-- `types/`: TypeScript type definitions
+- `app/`: メインアプリケーションコード
+    - `client.ts`: HonoXクライアントを使用したクライアント側エントリーポイント
+    - `server.ts`: HonoXサーバーを使用したサーバー側エントリーポイント
+    - `style.css`: グローバルスタイル
+    - `islands/`: インタラクティブコンポーネント（クライアント側でハイドレーション）
+        - `counter.tsx`: インクリメントボタン付きの単純なカウンターコンポーネント
+    - `routes/`: アプリケーションルート
+        - `index.tsx`: カウンターコンポーネントを含むメインページルート
+        - `_renderer.tsx`: HTML構造のためのJSXレンダラー
+        - `_404.tsx`: 404 Not Foundハンドラー
+        - `_error.tsx`: エラーハンドラー
+- `public/`: 静的アセット
+- `types/`: TypeScript型定義
 
-### Build and Deployment
+### ビルドとデプロイメント
 
-- Development server: `pnpm dev` (Vite)
-- Build: `pnpm build` (Vite + Cloudflare Workers)
-- Preview: `pnpm preview` (Wrangler)
-- Deploy: `pnpm deploy` (Wrangler)
+- 開発サーバー: `pnpm dev` (Vite)
+- ビルド: `pnpm build` (Vite + Cloudflare Workers)
+- プレビュー: `pnpm preview` (Wrangler)
+- デプロイ: `pnpm deploy` (Wrangler)
 
-### Testing
+### テスト
 
-- Unit tests: `pnpm test` (Vitest with happy-dom)
-- E2E tests: `pnpm e2e` (Playwright)
+- ユニットテスト: `pnpm test` (happy-dom付きVitest)
+- E2Eテスト: `pnpm e2e` (Playwright)
 
 ## Git
 
-The main branch should always be stable.
+メインブランチは常に安定しているべきです。
 
-Work on the main-x.x.x branch and run tests before merging into the main branch.
+main-x.x.xブランチで作業し、メインブランチにマージする前にテストを実行してください。
 
-Commit shall be performed for each pure function or component file created. Updates and modifications to functions are also committed individually. However, it is assumed that the biome and test commands have been executed and succeeded before the commit.
+純粋な関数やコンポーネントファイルが作成されるたびにコミットを行います。関数の更新や修正も個別にコミットされます。ただし、コミット前にbiomeとテストコマンドが実行され、成功していることが前提です。
 
-Also, development instructions and git commit instructions are given separately. Ask the user once the indicated function or modification is completed.
+また、開発指示とgitコミット指示は別々に与えられます。指示された関数や修正が完了したら、ユーザーに確認してください。
 
 ## Docker
 
-Your local D:\dev\owl is the repository root.
+ローカルのD:\dev\owlがリポジトリのルートです。
 
-The container is named owl-app and everything in D:\dev\owl is mounted to /home/owl/dev in the container.
+コンテナはowl-appという名前で、D:\dev\owl内のすべてがコンテナ内の/home/owl/devにマウントされています。
 
-The user performs tasks on the host OS (Windows), such as creating and starting the container, but the user and AI work together in the container.
+ユーザーはホストOS（Windows）でコンテナの作成や起動などのタスクを実行しますが、ユーザーとAIはコンテナ内で一緒に作業します。
 
-Only software installation is done by the root user, while other tasks such as development are done by the owl user.
+ソフトウェアのインストールのみrootユーザーによって行われ、開発などの他のタスクはowlユーザーによって行われます。
 
-Since AI starts work from the beginning as an owl user in ~/dev (/home/owl/dev), there is no particular need to be aware of the container.
+AIは最初から~/dev（/home/owl/dev）内のowlユーザーとして作業を開始するため、コンテナを特に意識する必要はありません。
 
-## Technology Selection
+## 技術選択
 
-pnpm will be used as the package manager.
+パッケージマネージャーとしてpnpmを使用します。
 
-HonoX + hono/jsx + TypeScript will be used, following functional programming, domain driven design and test driven development.
+HonoX + hono/jsx + TypeScriptを使用し、関数型プログラミング、ドメイン駆動設計、テスト駆動開発に従います。
 
-Use Biome's default configuration for Linter and Formatter.
+リンターとフォーマッターにはBiomeのデフォルト設定を使用します。
 
-Use Vitest for unit testing and Playwright for E2E testing.
+ユニットテストにはVitestを、E2EテストにはPlaywrightを使用します。
 
-## Miscellaneous
+## その他
 
-If you create a pure function, your first priority is the success of its unit test.
+純粋な関数を作成する場合、ユニットテストの成功が最優先事項です。
 
-Use early returns to make the nesting of conditional branches shallower.
+条件分岐のネストを浅くするために、早期リターンを使用してください。
 
-Run biome lint --write && biome format --write before committing.
+コミット前に biome lint --write && biome format --write を実行してください。
 
-Use kebab cases for file names.
+ファイル名にはケバブケースを使用してください。
 
-Type-related files should be placed in app/types, but only .d.ts should be placed in types/ directly under the repository root.
+型関連のファイルはapp/typesに配置しますが、.d.tsファイルのみリポジトリルート直下のtypes/に配置します。
+
+## コミュニケーション
+
+すべてのコミュニケーションは日本語で行います。ソースコードへのコメントも日本語で記述します。

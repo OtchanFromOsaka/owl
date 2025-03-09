@@ -1,96 +1,96 @@
-# Codename: Owl - Requirements Document
+# コードネーム：Owl - 要件ドキュメント
 
-## Overview
+## 概要
 
-This document outlines the requirements for building a page in Cloudflare Workers that showcases a YouTube feed showing bird nests.
+このドキュメントは、鳥の巣を表示するYouTubeフィードを持つページをCloudflare Workersで構築するための要件を概説しています。
 
-## Project Name
+## プロジェクト名
 
-**Codename: Owl**
+**コードネーム：Owl**
 
-## Functional Requirements
+## 機能要件
 
-### Home Page (/)
+### ホームページ (/)
 
-1. **Page Title**
-    - The page title should be "Codename: Owl"
-    - The title should be prominently displayed at the top of the page
+1. **ページタイトル**
+    - ページタイトルは「コードネーム：Owl」とする
+    - タイトルはページの上部に目立つように表示する
 
-2. **YouTube Feed**
-    - The page should display a feed of YouTube videos showing bird nests
-    - Videos should be displayed as thumbnails in a grid or list layout
-    - Each thumbnail should include:
-        - Video thumbnail image
-        - Video title
-        - Channel name (optional)
-        - View count (optional)
-        - Upload date (optional)
+2. **YouTubeフィード**
+    - ページには鳥の巣を表示するYouTubeビデオのフィードを表示する
+    - ビデオはサムネイルとしてグリッドまたはリストレイアウトで表示する
+    - 各サムネイルには以下を含める：
+        - ビデオのサムネイル画像
+        - ビデオタイトル
+        - チャンネル名（オプション）
+        - 視聴回数（オプション）
+        - アップロード日（オプション）
 
-3. **Recommended Videos**
-    - Multiple thumbnails should be displayed as recommended deliveries
-    - Thumbnails should be arranged in a visually appealing layout
-    - The layout should be responsive and adapt to different screen sizes
+3. **おすすめビデオ**
+    - 複数のサムネイルをおすすめコンテンツとして表示する
+    - サムネイルは視覚的に魅力的なレイアウトで配置する
+    - レイアウトはレスポンシブであり、異なる画面サイズに適応する
 
-### Video Interaction
+### ビデオインタラクション
 
-1. **Thumbnail Clicking**
-    - When a user clicks on a thumbnail, they should be directed to the YouTube video
-    - The video could either:
-        - Open in a new tab directly on YouTube, or
-        - Play embedded on the page (optional enhancement)
+1. **サムネイルクリック**
+    - ユーザーがサムネイルをクリックすると、YouTubeビデオに誘導される
+    - ビデオは以下のいずれかの方法で表示される：
+        - YouTubeで新しいタブで直接開く、または
+        - ページ内に埋め込んで再生する（オプションの拡張機能）
 
-## Technical Requirements
+## 技術要件
 
-1. **Platform**
-    - The application must be deployed to Cloudflare Workers
-    - Use the existing HonoX + hono/jsx + TypeScript stack
+1. **プラットフォーム**
+    - アプリケーションはCloudflare Workersにデプロイする必要がある
+    - 既存のHonoX + hono/jsx + TypeScriptスタックを使用する
 
-2. **YouTube Data**
-    - Fetch YouTube video data related to bird nests
-    - Options for implementation:
-        - Use YouTube Data API (requires API key)
-        - Use a static JSON file with predefined video data
-        - Use server-side fetching to avoid exposing API keys
+2. **YouTubeデータ**
+    - 鳥の巣に関連するYouTubeビデオデータを取得する
+    - 実装オプション：
+        - YouTube Data API（APIキーが必要）を使用する
+        - 事前定義されたビデオデータを持つ静的JSONファイルを使用する
+        - APIキーを公開しないためにサーバーサイドフェッチングを使用する
 
-3. **Responsive Design**
-    - The page should work well on desktop and mobile devices
-    - Layout should adapt to different screen sizes
+3. **レスポンシブデザイン**
+    - ページはデスクトップとモバイルデバイスで適切に動作する必要がある
+    - レイアウトは異なる画面サイズに適応する必要がある
 
-4. **Performance**
-    - The page should load quickly
-    - Optimize image loading for thumbnails
-    - Consider lazy loading for thumbnails below the fold
+4. **パフォーマンス**
+    - ページは素早く読み込まれる必要がある
+    - サムネイルの画像読み込みを最適化する
+    - 画面下部のサムネイルには遅延読み込みを検討する
 
-## Design Guidelines
+## デザインガイドライン
 
-1. **Theme**
-    - Use a clean, nature-inspired design that complements the bird nest content
-    - Consider using earthy tones and natural colors
+1. **テーマ**
+    - 鳥の巣のコンテンツを補完するクリーンで自然をイメージしたデザインを使用する
+    - アースカラーや自然な色調の使用を検討する
 
-2. **Layout**
-    - Clear visual hierarchy with the title at the top
-    - Organized grid or list of thumbnails
-    - Adequate spacing between elements for readability
+2. **レイアウト**
+    - 上部にタイトルを配置した明確な視覚的階層
+    - サムネイルの整理されたグリッドまたはリスト
+    - 読みやすさのための要素間の適切な間隔
 
-## Development Approach
+## 開発アプローチ
 
-1. Follow the existing project structure
-2. Create necessary components in the islands directory for interactive elements
-3. Implement the main page in the routes directory
-4. Follow functional programming principles as per project guidelines
-5. Write unit tests for all pure functions
-6. Ensure code passes Biome linting and formatting
+1. 既存のプロジェクト構造に従う
+2. インタラクティブな要素のためにislandsディレクトリに必要なコンポーネントを作成する
+3. routesディレクトリにメインページを実装する
+4. プロジェクトガイドラインに従って関数型プログラミングの原則に従う
+5. すべての純粋関数に対してユニットテストを作成する
+6. コードがBiomeのリンティングとフォーマットに合格することを確認する
 
-## Future Enhancements (Optional)
+## 将来の拡張機能（オプション）
 
-1. Video filtering by bird species
-2. Search functionality
-3. Pagination or infinite scrolling for more videos
-4. User accounts to save favorite videos
-5. Dark/light mode toggle
+1. 鳥の種類によるビデオフィルタリング
+2. 検索機能
+3. より多くのビデオのためのページネーションまたは無限スクロール
+4. お気に入りビデオを保存するためのユーザーアカウント
+5. ダーク/ライトモードの切り替え
 
-## Testing Requirements
+## テスト要件
 
-1. Unit tests for all pure functions
-2. E2E tests for critical user flows
-3. Responsive design testing across different devices
+1. すべての純粋関数に対するユニットテスト
+2. 重要なユーザーフローに対するE2Eテスト
+3. 異なるデバイス間でのレスポンシブデザインテスト
