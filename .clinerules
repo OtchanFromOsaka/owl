@@ -46,6 +46,8 @@ The main branch should always be stable.
 
 Work on the main-x.x.x branch and run tests before merging into the main branch.
 
+Commit shall be performed for each pure function or component file created. Updates and modifications to functions are also committed individually. However, it is assumed that the biome and test commands have been executed and succeeded before the commit.
+
 ## Docker
 
 Your local D:\dev\owl is the repository root.
