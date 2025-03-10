@@ -1,10 +1,11 @@
-import { describe, expect, it, vi, beforeEach, afterEach } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import {
 	fetchYouTubeVideos,
 	formatViewCount,
 	formatUploadDate,
 	getYouTubeVideoUrl,
 } from "../../../app/utils/youtube-data";
+import { birdNestVideos } from "../../../app/data/videos";
 
 describe("formatViewCount", () => {
 	it("should format view count less than 1000", () => {
@@ -60,55 +61,29 @@ describe("getYouTubeVideoUrl", () => {
 });
 
 describe("fetchYouTubeVideos", () => {
-	it("should fetch videos successfully", async () => {
-		// モックデータ
-		const mockVideos = [
-			{
-				id: "test1",
-				title: "Test Video 1",
-				channelName: "Test Channel",
-				thumbnailUrl: "https://example.com/thumb1.jpg",
-			},
-		];
-
-		// fetchをモック化
-		global.fetch = vi.fn().mockResolvedValue({
-			ok: true,
-			json: vi.fn().mockResolvedValue({ videos: mockVideos }),
-		});
-
+	it("should return videos from the TypeScript module", async () => {
 		const result = await fetchYouTubeVideos();
-		expect(result).toEqual(mockVideos);
-		expect(fetch).toHaveBeenCalledWith("/data/bird-nest-videos.json");
+		expect(result).toEqual(birdNestVideos);
 	});
 
-	it("should handle fetch errors", async () => {
-		// エラーを返すfetchをモック化
-		global.fetch = vi.fn().mockResolvedValue({
-			ok: false,
-			status: 404,
+	it("should handle errors and return empty array", async () => {
+		// モジュールインポートでエラーが発生した場合をシミュレート
+		vi.spyOn(console, "error").mockImplementation(() => {});
+		
+		// 一時的にbirdNestVideosへのアクセスでエラーを発生させる
+		const originalImport = await import("../../../app/data/videos");
+		const mockError = new Error("Module import error");
+		
+		// モジュールのプロパティアクセスでエラーを投げるようにする
+		Object.defineProperty(originalImport, "birdNestVideos", {
+			get: () => { throw mockError; }
 		});
-
-		// console.errorをモック化
-		console.error = vi.fn();
-
+		
 		const result = await fetchYouTubeVideos();
 		expect(result).toEqual([]);
 		expect(console.error).toHaveBeenCalled();
-	});
-
-	it("should handle JSON parsing errors", async () => {
-		// JSONエラーを返すfetchをモック化
-		global.fetch = vi.fn().mockResolvedValue({
-			ok: true,
-			json: vi.fn().mockRejectedValue(new Error("JSON parse error")),
-		});
-
-		// console.errorをモック化
-		console.error = vi.fn();
-
-		const result = await fetchYouTubeVideos();
-		expect(result).toEqual([]);
-		expect(console.error).toHaveBeenCalled();
+		
+		// モックをリセット
+		vi.spyOn(console, "error").mockRestore();
 	});
 });

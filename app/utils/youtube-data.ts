@@ -1,22 +1,14 @@
 import type { YouTubeVideo } from "../types/youtube";
+import { birdNestVideos } from "../data/videos";
 
 /**
- * 静的JSONファイルからYouTubeビデオデータを取得する
+ * TypeScriptモジュールからYouTubeビデオデータを取得する
  * @returns Promise<YouTubeVideo[]> YouTubeビデオの配列
  */
 export const fetchYouTubeVideos = async (): Promise<YouTubeVideo[]> => {
 	try {
-		// 開発環境では完全なURLを使用する必要がある
-		const baseUrl = typeof window !== "undefined" 
-			? window.location.origin 
-			: "http://localhost:5173";
-		
-		const response = await fetch(`${baseUrl}/data/bird-nest-videos.json`);
-		if (!response.ok) {
-			throw new Error(`Failed to fetch videos: ${response.status}`);
-		}
-		const data = await response.json() as { videos: YouTubeVideo[] };
-		return data.videos;
+		// 静的なTypeScriptデータを返す
+		return birdNestVideos;
 	} catch (error) {
 		console.error("Error fetching YouTube videos:", error);
 		return [];
