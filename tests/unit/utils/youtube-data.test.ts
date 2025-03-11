@@ -69,6 +69,15 @@ describe("formatLocalTime", () => {
 		// テスト用に固定の時間文字列を返すようにモックする
 		Date.prototype.toLocaleTimeString = vi.fn().mockImplementation(
 			function(locale, options) {
+				if (options?.hour12 === false) {
+					// 時間のみを返す場合（hour12: false）
+					if (options?.timeZone === "America/Los_Angeles") {
+						return "12";
+					}
+					return "21";
+				}
+				
+				// 通常の時間文字列を返す場合
 				if (options?.timeZone === "America/Los_Angeles") {
 					return "12:00";
 				}
@@ -88,7 +97,9 @@ describe("formatLocalTime", () => {
 			"America/Los_Angeles",
 			"-07:00"
 		);
-		expect(result).toBe("12:00（PDT）");
+		expect(result.timeString).toBe("12:00（PDT）");
+		expect(result.isDaytime).toBe(true);
+		expect(result.hour).toBe(12);
 	});
 	
 	it("should format local time with timezone abbreviation for Tokyo", () => {
@@ -97,13 +108,19 @@ describe("formatLocalTime", () => {
 			"Asia/Tokyo",
 			"+09:00"
 		);
-		expect(result).toBe("21:00（JST）");
+		expect(result.timeString).toBe("21:00（JST）");
+		expect(result.isDaytime).toBe(false);
+		expect(result.hour).toBe(21);
 	});
 	
-	it("should return empty string if timezone or offset is missing", () => {
-		expect(formatLocalTime("2021-09-16")).toBe("");
-		expect(formatLocalTime("2021-09-16", "America/Los_Angeles")).toBe("");
-		expect(formatLocalTime("2021-09-16", undefined, "-07:00")).toBe("");
+	it("should return default values if timezone or offset is missing", () => {
+		const defaultResult = formatLocalTime("2021-09-16");
+		expect(defaultResult.timeString).toBe("");
+		expect(defaultResult.isDaytime).toBe(true);
+		expect(defaultResult.hour).toBe(12);
+		
+		expect(formatLocalTime("2021-09-16", "America/Los_Angeles").timeString).toBe("");
+		expect(formatLocalTime("2021-09-16", undefined, "-07:00").timeString).toBe("");
 	});
 	
 	it("should handle unknown timezones by using UTC offset", () => {
@@ -112,7 +129,9 @@ describe("formatLocalTime", () => {
 			"Unknown/Timezone",
 			"+05:30"
 		);
-		expect(result).toBe("21:00（UTC+05:30）");
+		expect(result.timeString).toBe("21:00（UTC+05:30）");
+		expect(result.isDaytime).toBe(false);
+		expect(result.hour).toBe(21);
 	});
 });
 

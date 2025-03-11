@@ -20,15 +20,27 @@ export const fetchYouTubeVideos = async (): Promise<YouTubeVideo[]> => {
  * @param date 日付文字列（YYYY-MM-DD形式）
  * @param timezone タイムゾーン識別子（例：'America/Los_Angeles'）
  * @param timezoneOffset UTCからのオフセット（例：'-08:00'）
- * @returns 現地時間の文字列（例：「午前10:30（PT）」）
+ * @returns 現地時間の情報（時間文字列とアイコン情報）
  */
+export interface LocalTimeInfo {
+	timeString: string; // 時間文字列（例：「午前10:30（PT）」）
+	isDaytime: boolean; // 昼間かどうか（6時〜18時）
+	hour: number;       // 時間（0-23）
+}
+
 export const formatLocalTime = (
 	date: string,
 	timezone?: string,
 	timezoneOffset?: string,
-): string => {
+): LocalTimeInfo => {
+	const defaultResult: LocalTimeInfo = {
+		timeString: "",
+		isDaytime: true,
+		hour: 12
+	};
+
 	if (!timezone || !timezoneOffset) {
-		return "";
+		return defaultResult;
 	}
 
 	try {
@@ -45,10 +57,27 @@ export const formatLocalTime = (
 			timeZone: timezone,
 		});
 		
-		return `${timeString}（${tzAbbr}）`;
+		// 時間を取得する（0-23）
+		const hour = dateObj.toLocaleTimeString("ja-JP", {
+			hour: "numeric",
+			hour12: false,
+			timeZone: timezone,
+		});
+		
+		// 時間を数値に変換
+		const hourNum = parseInt(hour, 10);
+		
+		// 昼間かどうかを判断（6時〜18時）
+		const isDaytime = hourNum >= 6 && hourNum < 18;
+		
+		return {
+			timeString: `${timeString}（${tzAbbr}）`,
+			isDaytime,
+			hour: hourNum
+		};
 	} catch (error) {
 		console.error("Error formatting local time:", error);
-		return "";
+		return defaultResult;
 	}
 };
 

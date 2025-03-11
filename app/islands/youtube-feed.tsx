@@ -5,6 +5,7 @@ import {
 	formatViewCount,
 	getYouTubeVideoUrl,
 	formatLocalTime,
+	type LocalTimeInfo,
 } from "../utils/youtube-data";
 
 interface YouTubeFeedProps {
@@ -70,7 +71,31 @@ export default function YouTubeFeed({ videos }: YouTubeFeedProps) {
 							<h3 class="text-lg font-semibold line-clamp-2 mb-1">
 								{video.title}
 							</h3>
-							<p class="text-gray-600 mb-1">{video.channelName}</p>
+							<p class="text-gray-600 mb-2">{video.channelName}</p>
+							
+							{/* 現地時間を最も目立つ位置に配置 */}
+							{video.uploadDate && video.timezone && video.timezoneOffset && (() => {
+								const localTime = formatLocalTime(video.uploadDate, video.timezone, video.timezoneOffset);
+								return (
+									<div class="mb-3 flex items-center font-medium">
+										<span class="text-blue-700 bg-blue-50 px-2 py-1 rounded-md flex items-center">
+											{localTime.isDaytime ? (
+												<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1 text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+													<circle cx="12" cy="12" r="5" fill="currentColor" stroke="none" />
+													<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
+												</svg>
+											) : (
+												<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+													<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" fill="currentColor" />
+												</svg>
+											)}
+											現地時間: {localTime.timeString}
+										</span>
+									</div>
+								);
+							})()}
+							
+							{/* 視聴回数と公開日時を下部に配置 */}
 							<div class="flex flex-col text-sm text-gray-500">
 								<div class="flex">
 									{video.viewCount && (
@@ -80,13 +105,6 @@ export default function YouTubeFeed({ videos }: YouTubeFeedProps) {
 										<span>{formatUploadDate(video.uploadDate)}</span>
 									)}
 								</div>
-								{video.uploadDate && video.timezone && video.timezoneOffset && (
-									<div class="mt-1">
-										<span class="text-blue-600">
-											現地時間: {formatLocalTime(video.uploadDate, video.timezone, video.timezoneOffset)}
-										</span>
-									</div>
-								)}
 							</div>
 						</div>
 					</a>
