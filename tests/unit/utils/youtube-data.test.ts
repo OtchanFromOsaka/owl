@@ -62,7 +62,7 @@ describe("getYouTubeVideoUrl", () => {
 });
 
 describe("formatLocalTime", () => {
-	// Date.prototype.toLocaleTimeStringをモックする
+	// オリジナルのtoLocaleTimeStringを保存
 	const originalToLocaleTimeString = Date.prototype.toLocaleTimeString;
 	
 	beforeEach(() => {
@@ -72,16 +72,16 @@ describe("formatLocalTime", () => {
 				if (options?.hour12 === false) {
 					// 時間のみを返す場合（hour12: false）
 					if (options?.timeZone === "America/Los_Angeles") {
-						return "12";
+						return "7";
 					}
 					return "21";
 				}
 				
 				// 通常の時間文字列を返す場合
 				if (options?.timeZone === "America/Los_Angeles") {
-					return "12:00";
+					return "7:40";
 				}
-				return "21:00";
+				return "21:40";
 			}
 		);
 	});
@@ -93,22 +93,22 @@ describe("formatLocalTime", () => {
 
 	it("should format local time with timezone abbreviation for Los Angeles", () => {
 		const result = formatLocalTime(
-			"2021-09-16",
+			"2021-09-16", // この日付は使用されない
 			"America/Los_Angeles",
 			"-07:00"
 		);
-		expect(result.timeString).toBe("12:00（PDT）");
+		expect(result.timeString).toBe("7:40（PDT）");
 		expect(result.isDaytime).toBe(true);
-		expect(result.hour).toBe(12);
+		expect(result.hour).toBe(7);
 	});
 	
 	it("should format local time with timezone abbreviation for Tokyo", () => {
 		const result = formatLocalTime(
-			"2021-09-16",
+			"2021-09-16", // この日付は使用されない
 			"Asia/Tokyo",
 			"+09:00"
 		);
-		expect(result.timeString).toBe("21:00（JST）");
+		expect(result.timeString).toBe("21:40（JST）");
 		expect(result.isDaytime).toBe(false);
 		expect(result.hour).toBe(21);
 	});
@@ -125,11 +125,11 @@ describe("formatLocalTime", () => {
 	
 	it("should handle unknown timezones by using UTC offset", () => {
 		const result = formatLocalTime(
-			"2021-09-16",
+			"2021-09-16", // この日付は使用されない
 			"Unknown/Timezone",
 			"+05:30"
 		);
-		expect(result.timeString).toBe("21:00（UTC+05:30）");
+		expect(result.timeString).toBe("21:40（UTC+05:30）");
 		expect(result.isDaytime).toBe(false);
 		expect(result.hour).toBe(21);
 	});

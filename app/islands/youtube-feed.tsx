@@ -5,7 +5,6 @@ import {
 	formatViewCount,
 	getYouTubeVideoUrl,
 	formatLocalTime,
-	type LocalTimeInfo,
 } from "../utils/youtube-data";
 
 interface YouTubeFeedProps {
@@ -72,8 +71,6 @@ export default function YouTubeFeed({ videos }: YouTubeFeedProps) {
 								{video.title}
 							</h3>
 							<p class="text-gray-600 mb-2">{video.channelName}</p>
-							
-							{/* 現地時間を最も目立つ位置に配置 */}
 							{video.uploadDate && video.timezone && video.timezoneOffset && (() => {
 								const localTime = formatLocalTime(video.uploadDate, video.timezone, video.timezoneOffset);
 								return (
@@ -94,8 +91,6 @@ export default function YouTubeFeed({ videos }: YouTubeFeedProps) {
 									</div>
 								);
 							})()}
-							
-							{/* 視聴回数と公開日時を下部に配置 */}
 							<div class="flex flex-col text-sm text-gray-500">
 								<div class="flex">
 									{video.viewCount && (

@@ -17,7 +17,7 @@ export const fetchYouTubeVideos = async (): Promise<YouTubeVideo[]> => {
 
 /**
  * 指定されたタイムゾーンでの現地時間を取得する
- * @param date 日付文字列（YYYY-MM-DD形式）
+ * @param date 日付文字列（YYYY-MM-DD形式）- 使用されませんが、互換性のために残しています
  * @param timezone タイムゾーン識別子（例：'America/Los_Angeles'）
  * @param timezoneOffset UTCからのオフセット（例：'-08:00'）
  * @returns 現地時間の情報（時間文字列とアイコン情報）
@@ -47,18 +47,18 @@ export const formatLocalTime = (
 		// タイムゾーン略称を取得する
 		const tzAbbr = getTimezoneAbbreviation(timezone, timezoneOffset);
 		
-		// 日付文字列を解析する（時間部分がない場合は正午を使用）
-		const dateObj = new Date(`${date}T12:00:00${timezoneOffset}`);
+		// 現在の日時を取得する
+		const now = new Date();
 		
 		// 現地時間の文字列を作成する
-		const timeString = dateObj.toLocaleTimeString("ja-JP", {
+		const timeString = now.toLocaleTimeString("ja-JP", {
 			hour: "numeric",
 			minute: "numeric",
 			timeZone: timezone,
 		});
 		
 		// 時間を取得する（0-23）
-		const hour = dateObj.toLocaleTimeString("ja-JP", {
+		const hour = now.toLocaleTimeString("ja-JP", {
 			hour: "numeric",
 			hour12: false,
 			timeZone: timezone,

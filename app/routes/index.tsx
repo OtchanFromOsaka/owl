@@ -17,18 +17,17 @@ export default createRoute(async (c) => {
 
 	return c.render(
 		<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-			<title>Codename: Owl</title>
 			<header class="text-center mb-8">
-				<h1 class="text-4xl font-bold text-gray-900 mb-2">Codename: Owl</h1>
+				<h1 class="text-4xl font-bold text-gray-900 mb-2">tori-live</h1>
 				<p class="text-xl text-gray-600">
-					Discover fascinating bird nest videos from around the world
+					鳥の巣を覗いてみよう
 				</p>
 			</header>
-
 			<section>
-				<h2 class="text-2xl font-semibold mb-4">Recommended Videos</h2>
+				<h2 class="text-2xl font-semibold mb-4">おすすめの配信</h2>
 				<YouTubeFeed videos={videos} />
 			</section>
 		</div>,
+		{ title: "tori-live" },
 	);
 });
