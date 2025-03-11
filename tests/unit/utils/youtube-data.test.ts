@@ -1,9 +1,10 @@
-import { describe, expect, it, vi } from "vitest";
+import { describe, expect, it, vi, beforeEach, afterEach } from "vitest";
 import {
 	fetchYouTubeVideos,
 	formatViewCount,
 	formatUploadDate,
 	getYouTubeVideoUrl,
+	formatLocalTime,
 } from "../../../app/utils/youtube-data";
 import { birdNestVideos } from "../../../app/data/videos";
 
@@ -57,6 +58,61 @@ describe("getYouTubeVideoUrl", () => {
 		expect(getYouTubeVideoUrl("abc123")).toBe(
 			"https://www.youtube.com/watch?v=abc123",
 		);
+	});
+});
+
+describe("formatLocalTime", () => {
+	// Date.prototype.toLocaleTimeStringをモックする
+	const originalToLocaleTimeString = Date.prototype.toLocaleTimeString;
+	
+	beforeEach(() => {
+		// テスト用に固定の時間文字列を返すようにモックする
+		Date.prototype.toLocaleTimeString = vi.fn().mockImplementation(
+			function(locale, options) {
+				if (options?.timeZone === "America/Los_Angeles") {
+					return "12:00";
+				}
+				return "21:00";
+			}
+		);
+	});
+	
+	afterEach(() => {
+		// テスト後に元の実装に戻す
+		Date.prototype.toLocaleTimeString = originalToLocaleTimeString;
+	});
+
+	it("should format local time with timezone abbreviation for Los Angeles", () => {
+		const result = formatLocalTime(
+			"2021-09-16",
+			"America/Los_Angeles",
+			"-07:00"
+		);
+		expect(result).toBe("12:00（PDT）");
+	});
+	
+	it("should format local time with timezone abbreviation for Tokyo", () => {
+		const result = formatLocalTime(
+			"2021-09-16",
+			"Asia/Tokyo",
+			"+09:00"
+		);
+		expect(result).toBe("21:00（JST）");
+	});
+	
+	it("should return empty string if timezone or offset is missing", () => {
+		expect(formatLocalTime("2021-09-16")).toBe("");
+		expect(formatLocalTime("2021-09-16", "America/Los_Angeles")).toBe("");
+		expect(formatLocalTime("2021-09-16", undefined, "-07:00")).toBe("");
+	});
+	
+	it("should handle unknown timezones by using UTC offset", () => {
+		const result = formatLocalTime(
+			"2021-09-16",
+			"Unknown/Timezone",
+			"+05:30"
+		);
+		expect(result).toBe("21:00（UTC+05:30）");
 	});
 });
 

@@ -4,6 +4,7 @@ import {
 	formatUploadDate,
 	formatViewCount,
 	getYouTubeVideoUrl,
+	formatLocalTime,
 } from "../utils/youtube-data";
 
 interface YouTubeFeedProps {
@@ -70,12 +71,21 @@ export default function YouTubeFeed({ videos }: YouTubeFeedProps) {
 								{video.title}
 							</h3>
 							<p class="text-gray-600 mb-1">{video.channelName}</p>
-							<div class="flex text-sm text-gray-500">
-								{video.viewCount && (
-									<span class="mr-2">{formatViewCount(video.viewCount)}</span>
-								)}
-								{video.uploadDate && (
-									<span>{formatUploadDate(video.uploadDate)}</span>
+							<div class="flex flex-col text-sm text-gray-500">
+								<div class="flex">
+									{video.viewCount && (
+										<span class="mr-2">{formatViewCount(video.viewCount)}</span>
+									)}
+									{video.uploadDate && (
+										<span>{formatUploadDate(video.uploadDate)}</span>
+									)}
+								</div>
+								{video.uploadDate && video.timezone && video.timezoneOffset && (
+									<div class="mt-1">
+										<span class="text-blue-600">
+											現地時間: {formatLocalTime(video.uploadDate, video.timezone, video.timezoneOffset)}
+										</span>
+									</div>
 								)}
 							</div>
 						</div>

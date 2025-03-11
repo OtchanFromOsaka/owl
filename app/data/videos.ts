@@ -10,6 +10,8 @@ export const birdNestVideos: YouTubeVideo[] = [
 		channelName: "FOBBV CAM",
 		viewCount: 15437,
 		uploadDate: "2021-09-16",
-		thumbnailUrl: "https://img.youtube.com/vi/B4-L2nfGcuE/maxresdefault.jpg"
+		thumbnailUrl: "https://img.youtube.com/vi/B4-L2nfGcuE/maxresdefault.jpg",
+		timezone: "America/Los_Angeles", // カリフォルニア州のタイムゾーン
+		timezoneOffset: "-07:00" // PDT（太平洋夏時間）のオフセット
 	}
 ];
