@@ -44,9 +44,6 @@ export const formatLocalTime = (
 	}
 
 	try {
-		// タイムゾーン略称を取得する
-		const tzAbbr = getTimezoneAbbreviation(timezone, timezoneOffset);
-		
 		// 現在の日時を取得する
 		const now = new Date();
 		
@@ -71,7 +68,7 @@ export const formatLocalTime = (
 		const isDaytime = hourNum >= 6 && hourNum < 18;
 		
 		return {
-			timeString: `${timeString}（${tzAbbr}）`,
+			timeString,
 			isDaytime,
 			hour: hourNum
 		};
@@ -79,38 +76,6 @@ export const formatLocalTime = (
 		console.error("Error formatting local time:", error);
 		return defaultResult;
 	}
-};
-
-/**
- * タイムゾーン識別子とオフセットから略称を取得する
- * @param timezone タイムゾーン識別子
- * @param offset UTCからのオフセット
- * @returns タイムゾーン略称
- */
-const getTimezoneAbbreviation = (timezone: string, offset: string): string => {
-	// 一般的なタイムゾーン略称のマッピング
-	const timezoneMap: Record<string, { std: string; dst: string }> = {
-		"America/Los_Angeles": { std: "PST", dst: "PDT" },
-		"America/Denver": { std: "MST", dst: "MDT" },
-		"America/Chicago": { std: "CST", dst: "CDT" },
-		"America/New_York": { std: "EST", dst: "EDT" },
-		"Europe/London": { std: "GMT", dst: "BST" },
-		"Europe/Paris": { std: "CET", dst: "CEST" },
-		"Asia/Tokyo": { std: "JST", dst: "JST" }, // 日本は夏時間を採用していない
-	};
-
-	// タイムゾーンマッピングが存在する場合
-	if (timezone in timezoneMap) {
-		// 夏時間かどうかを判断する（簡易的な方法）
-		const isDST = offset.includes("-07:00") || offset.includes("-06:00") || 
-					  offset.includes("-05:00") || offset.includes("-04:00") ||
-					  offset.includes("+02:00") || offset.includes("+03:00");
-		
-		return isDST ? timezoneMap[timezone].dst : timezoneMap[timezone].std;
-	}
-
-	// マッピングがない場合はUTCオフセットを返す
-	return `UTC${offset}`;
 };
 
 /**
